@@ -1,0 +1,42 @@
+# Maintainer: David Heinemeier Hansson <david@hey.com>
+
+pkgname=omacut
+pkgver=0.7.3
+pkgrel=1
+pkgdesc='Dead-simple video length trimmer built with Qt Quick and ffmpeg'
+arch=('x86_64' 'aarch64')
+url='https://github.com/omacom/omacut'
+license=('MIT')
+install='omacut.install'
+options=('!debug')
+depends=(
+  'ffmpeg'
+  'hicolor-icon-theme'
+  'qt6-base'
+  'qt6-declarative'
+  'qt6-multimedia'
+  'xdg-desktop-portal'
+)
+makedepends=(
+  'gcc'
+  'make'
+  'qt6-base'
+  'qt6-declarative'
+  'qt6-multimedia'
+)
+source=("$pkgname-$pkgver.tar.gz::https://github.com/omacom/omacut/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('76864975cf0b23a3250cd5a1bad7ac1a52ea4cb3ae03e25fc4a7042efc3a2193')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./bin/build
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  install -Dm755 build/omacut "$pkgdir/usr/bin/omacut"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 pkgbuild/omacut.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/omacut.svg"
+  install -Dm644 pkgbuild/omacut.desktop "$pkgdir/usr/share/applications/omacut.desktop"
+}
